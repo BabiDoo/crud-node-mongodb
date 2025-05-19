@@ -9,3 +9,4 @@ const connectDb = () => {
 };
 
 module.exports = connectDb;
+
