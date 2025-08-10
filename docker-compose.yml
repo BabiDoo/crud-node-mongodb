@@ -1,16 +1,30 @@
 version: "3.8"
 services:
   app:
-    build: .
+    container_name: docker-apollonia
+    restart: always
+    build: 
+      context: .
+    image: apollonia-image
     ports:
-      - "3000:3000"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/apollonia
-      - PORT=3000
+      - "3000:3000" #mapping localhost:containerport (like a tunnel from localhost to container)
+    env_file:
+      - .env #environment config
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy #only works if your db is ok!!
 
   mongo:
+    container_name: mongo
     image: mongo
-    ports:
-      - "27017:27017"
+    restart: always
+    volumes:
+    - mongo_data:/data/db #data persistence
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --eval 'db.adminCommand(\"ping\")' --quiet || exit 1"] #testing db health each 10 seconds
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo_data:

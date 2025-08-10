@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:current-alpine3.22
 
 WORKDIR /app
 
@@ -7,6 +7,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+#this says: "hey, ur server needs to run on port 3000"
+EXPOSE 3000 
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
+
+
