@@ -1,23 +1,18 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import express from 'express';
+import dotenv from 'dotenv';
+import connectdb from './config/db.js';
+import userRoutes from './routes/userRoute.js';
+import deptRoutes from './routes/departmentRoute.js';
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-const userRoutes = require('./routes/user');
-const deptRoutes = require('./routes/department');
-
 app.use('/user', userRoutes);
 app.use('/department', deptRoutes);
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+connectdb()
 .then(() => {
-  console.log('MongoDB connected');
   app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
   });
