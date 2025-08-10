@@ -1,12 +1,18 @@
 import { connect } from 'mongoose';
 
-const url = 'mongodb://mongo:27017/CRUD-nodejs-mongodb';
 
-const connectDb = () => {
-  connect(url, () => {
-    console.log('Connected to MongoDB');
-  });
+const connectdb = async () => {
+  try {
+    await connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("Conected to MongoDB");
+  } catch(err) {
+    console.log("Error connecting to MongoDB", err);
+    process.exit(1);
+  }
 };
 
-export default connectDb;
+export default connectdb;
 
