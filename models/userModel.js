@@ -7,15 +7,15 @@ const UserSchema = new Schema (
     {
         name: {
             type: String,
-            require: true,
+            required: true,
         },
         surname: {
             type: String,
-            require: true,
+            required: true,
         },
         department: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: `departmentModel`,
+            ref: `Department`,
             required: true
         }
 
