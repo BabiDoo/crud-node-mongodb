@@ -1,19 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userModel');
+const user = require('../controllers/userController');
 
-router.post('/', async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+//CREATE
+router.post(`/create`, user.create);
+
+//READ
+router.get('/users', (req, res) => {
+  if (req.query.id) {
+    return user.findById(req, res);
   }
+  return user.findAll(req, res);
 });
 
-router.get('/', async (req, res) => {
-  const users = await User.find().populate('department');
-  res.json(users);
-});
+//Update
+router.put(`/update`, user.update);
+
+//Delete
+router.delete(`/delete`, user.remove);
+
 
 module.exports = router;
